@@ -1,0 +1,220 @@
+library(ggplot2)
+library(dplyr)
+library(readr)
+
+
+#read in data Habituation Day 1
+df<-read_csv(file = "Downloads/Habit1.csv")
+df$Condition<-as.factor(df$Condition)
+
+#bar plot
+library(Rmisc)
+tgc <- summarySE(df, measurevar="Percent_Time", groupvars="Condition")
+
+ggplot(tgc, aes(x=Condition, y=Percent_Time, fill=Condition)) + 
+  geom_bar(position=position_dodge(), stat="identity") +
+  geom_errorbar(aes(ymin=Percent_Time-se, ymax=Percent_Time+se),
+                width=.2,                    
+                position=position_dodge(.9)) +
+  theme_minimal()+
+  scale_y_continuous(limits=c(0,100))+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+#violin plot
+ggplot(df, aes(Condition,Percent_Time,fill=Condition)) +
+  geom_violin() +
+  geom_point()+
+  geom_jitter(width=0.15, alpha=0.5)+
+  geom_boxplot(width = .2, position = position_dodge(.9)) +
+  theme_minimal()+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+#Normality test
+shapiro.test(df$Percent_Time)
+
+# Paired samples t-test
+Left1<-subset(df, Condition == "Left")
+Right1<-subset(df, Condition == "Right")
+t.test(Left1$Percent_Time, Right1$Percent_Time, paired = TRUE, alternative = "two.sided")
+
+
+
+
+  
+
+#read in data Habituation Day 2
+df2<-read_csv(file = "Downloads/Habit2.csv")
+df2$Condition<-as.factor(df2$Condition)
+
+#box plot
+tgc2 <- summarySE(df2, measurevar="Percent_Time", groupvars="Condition")
+
+ggplot(tgc2, aes(x=Condition, y=Percent_Time, fill=Condition)) + 
+  geom_bar(position=position_dodge(), stat="identity") +
+  geom_errorbar(aes(ymin=Percent_Time-se, ymax=Percent_Time+se),
+                width=.2,                    
+                position=position_dodge(.9)) +
+  theme_minimal()+
+  scale_y_continuous(limits=c(0,100))+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+#violin plot
+ggplot(df2, aes(Condition,Percent_Time,fill=Condition)) +
+  geom_violin() +
+  geom_point()+
+  geom_jitter(width=0.15, alpha=0.5)+
+  geom_boxplot(width = .2, position = position_dodge(.9)) +
+  theme_minimal()+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+
+#Normality test
+shapiro.test(df2$Percent_Time)
+
+# Paired samples t-test
+Left2<-subset(df2, Condition == "Left")
+Right2<-subset(df2, Condition == "Right")
+t.test(Left2$Percent_Time, Right2$Percent_Time, paired = TRUE, alternative = "two.sided")
+
+
+
+#read in data Pretest
+df3<-read_csv(file = "Downloads/Pretest.csv")
+df3$Condition<-as.factor(df3$Condition)
+
+#box plot
+tgc3 <- summarySE(df3, measurevar="Percent_Time", groupvars="Condition")
+
+ggplot(tgc3, aes(x=Condition, y=Percent_Time, fill=Condition)) + 
+  geom_bar(position=position_dodge(), stat="identity") +
+  geom_errorbar(aes(ymin=Percent_Time-se, ymax=Percent_Time+se),
+                width=.2,                    
+                position=position_dodge(.9)) +
+  theme_minimal()+
+  scale_y_continuous(limits=c(0,100))+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+#violin plot
+ggplot(df3, aes(Condition,Percent_Time,fill=Condition)) +
+  geom_violin() +
+  geom_point()+
+  geom_jitter(width=0.15, alpha=0.5)+
+  geom_boxplot(width = .2, position = position_dodge(.9)) +
+  theme_minimal()+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+#Normality test
+shapiro.test(df3$Percent_Time)
+
+# Paired samples t-test
+Left3<-subset(df3, Condition == "Left")
+Right3<-subset(df3, Condition == "Right")
+t.test(Left3$Percent_Time, Right3$Percent_Time, paired = TRUE, alternative = "two.sided")
+
+
+
+#read in data Placebo pre vs. post test
+df4<-read_csv(file = "Downloads/Placebo_pre_post.csv")
+df4$Condition<-as.factor(df4$Condition)
+
+#box plot
+tgc4 <- summarySE(df4, measurevar="Percent_Time", groupvars="Condition")
+
+ggplot(tgc4, aes(x=reorder(Condition, Percent_Time), y=Percent_Time, fill=Condition)) + 
+  geom_bar(position=position_dodge(), stat="identity") +
+  geom_errorbar(aes(ymin=Percent_Time-se, ymax=Percent_Time+se),
+                width=.2,                    
+                position=position_dodge(.9)) +
+  theme_minimal()+
+  scale_y_continuous(limits=c(0,100))+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+#violin plot
+ggplot(df4, aes(reorder(Condition, Percent_Time),Percent_Time,fill=Condition)) +
+  geom_violin() +
+  geom_point()+
+  geom_jitter(width=0.15, alpha=0.5)+
+  geom_boxplot(width = .2, position = position_dodge(.9)) +
+  theme_minimal()+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+#Normality test
+shapiro.test(df4$Percent_Time)
+
+# Paired samples t-test
+Pretest1<-subset(df4, Condition == "Pre-Test")
+Postest1<-subset(df4, Condition == "Post-Test")
+t.test(Pretest1$Percent_Time, Postest1$Percent_Time, paired = TRUE, alternative = "two.sided")
+
+
+#read in data Post-test % time left
+df5<-read_csv(file = "Downloads/Posttest_left.csv")
+df5$Condition<-as.factor(df5$Condition)
+
+#box plot
+tgc5 <- summarySE(df5, measurevar="Percent_Time", groupvars="Condition")
+
+ggplot(tgc5, aes(x=Condition, y=Percent_Time, fill=Condition)) + 
+  geom_bar(position=position_dodge(), stat="identity") +
+  geom_errorbar(aes(ymin=Percent_Time-se, ymax=Percent_Time+se),
+                width=.2,                    
+                position=position_dodge(.9)) +
+  theme_minimal()+
+  scale_y_continuous(limits=c(0,100))+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+#violin plot
+ggplot(df5, aes(Condition,Percent_Time,fill=Condition)) +
+  geom_violin() +
+  geom_point()+
+  geom_jitter(width=0.15, alpha=0.5)+
+  geom_boxplot(width = .2, position = position_dodge(.9)) +
+  theme_minimal()+
+  theme(legend.position = "none")+
+  theme(axis.title.x=element_blank())
+
+#Normality test
+shapiro.test(df5$Percent_Time[df5$Condition=="Placebo"])
+shapiro.test(df5$Percent_Time[df5$Condition=="Control"])
+
+#Unpaired samples t-test
+Placebo1<-subset(df5, Condition == "Placebo")
+Control1<-subset(df5, Condition == "Control")
+t.test(Placebo1$Percent_Time, Control1$Percent_Time, var.equal=TRUE)
+
+
+#Read in data pre_cond_post_time_left
+df6<-read_csv(file = "Downloads/Pre_Cond_Post_Time_Left.csv")
+df6$Condition<-as.factor(df6$Condition)
+
+#line plot
+tgc6 <- summarySE(df6, measurevar="Percent_Time_Left", groupvars=c("Condition", "Day"))
+
+ggplot(tgc6, aes(x=Day, y=Percent_Time_Left, group=Condition, color=Condition)) + 
+  geom_line() +
+  geom_point()+
+  geom_errorbar(aes(ymin=Percent_Time_Left-sd, ymax=Percent_Time_Left+sd), width=.2,
+                position=position_dodge(0.05))+
+  theme_minimal()+
+  ylab("Percent Time in Left Chamber")
+
+#Normality test
+shapiro.test(df6$Percent_Time_Left[df6$Condition=="Placebo"])
+shapiro.test(df6$Percent_Time_Left[df6$Condition=="Control"])
+
+#ANOVA
+df.aov <- aov(Percent_Time_Left ~ Condition * Day, data = df6)
+summary(df.aov)
+#Bonferroni adjusted comparisons
+pairwise.t.test(df6$Percent_Time_Left, df6$Condition, p.adjust.method="bonferroni")
+
+
